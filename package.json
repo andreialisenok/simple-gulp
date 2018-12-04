@@ -1,0 +1,14 @@
+{
+  "name": "start-template-gulp",
+  "version": "1.0.0",
+  "description": "template for quick start",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Andrey Alisenak",
+  "license": "MIT",
+  "devDependencies": {
+    "gulp": "^4.0.0"
+  }
+}
