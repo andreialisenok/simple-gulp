@@ -1,2 +1,15 @@
-.idea/
+.Saved/
+_arc/
+bower_components/
 node_modules/
+.vscode/
+.DS_Store
+*.log
+*.sublime-*
+*.rar
+*.zip
+.idea
+.publish
+ex_files
+Thumbs.db
+__MACOSX/
