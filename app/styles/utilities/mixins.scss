@@ -1,0 +1,329 @@
+@mixin mq($width, $type: min) {
+  @if map_has_key($breakpoints, $width) {
+    $width: map_get($breakpoints, $width);
+    @if $type == max {
+      $width: $width - 1px;
+    }
+    @media only screen and (#{$type}-width: $width) {
+      @content;
+    }
+  }
+}
+
+// clearfix
+// пример: @include cfx;
+@mixin cfx {
+  &:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+  }
+  * html & { height: 1px }
+}
+
+// центрирование элемента
+// пример: @include push--auto;
+@mixin push--auto {
+  margin: {
+    left: auto;
+    right: auto;
+  }
+}
+
+// Псевдо, при использовании ::before и ::after
+// пример: @include pseudo(inline-block,relative,'next');
+@mixin pseudo($display: block, $pos: absolute, $content: ''){
+  content: $content;
+  display: $display;
+  position: $pos;
+}
+
+// Отзывчивое соотношение. Данный миксин нужен для масштабируемых элементов чтобы сохранять соотношение при любом уменьшении или увеличении
+// Например, вы можете написать код ниже и ваш блок будет иметь соотношение, которое обычно используется в видео.
+// Пример: @include responsive-ratio(16,9);
+@mixin responsive-ratio($x,$y, $pseudo: false) {
+  $padding: unquote( ( $y / $x ) * 100 + '%' );
+  @if $pseudo {
+    &:before {
+      @include pseudo($pos: relative);
+      width: 100%;
+      padding-top: $padding;
+    }
+  } @else {
+    padding-top: $padding;
+  }
+}
+
+// усечение элемента применять к текстовым тегам типа "span" "p" и т.д.
+// пример: @include truncate(110px);
+@mixin truncate($truncation-boundary) {
+  max-width: $truncation-boundary;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// Стилизация placeholder
+// пример: @include place($red);
+@mixin place($cl) {
+  &::-webkit-input-placeholder {color:$cl;}
+  &::-moz-placeholder {color:$cl;}
+  &:-moz-placeholder {color:$cl;}
+  &:-ms-input-placeholder {color:$cl;}
+}
+
+// горизонтальное выравнивание для inline блока
+// пример: @include justify;
+@mixin justify {
+  text-align: justify;
+  line-height: 0;
+  font-size: 0;
+  text-justify: newspaper;
+  zoom: 1;
+  text-align-last: justify;
+  &:after {
+    content: "";
+    display: inline-block;
+    width: 100%;
+    height: 0px;
+    visibility: hidden;
+    overflow: hidden;
+  }
+}
+
+// вертикальное выравнивание для inline блока
+// пример: @include vertical;
+@mixin vertical {
+  text-align: center;
+  font-size: 0;
+  &:before {
+    content: "";
+    display: inline-block;
+    vertical-align: middle;
+    width: 0;
+    height: 100%;
+  }
+}
+
+// тень блока
+// пример: @include bsh(1px,1px,3px,0,$gray,inset);
+@mixin bsh($top, $left, $blur, $size, $color, $inset: false) {
+  @if $inset {
+    -webkit-box-shadow:inset $top $left $blur $size $color;
+    -moz-box-shadow:inset $top $left $blur $size $color;
+    box-shadow:inset $top $left $blur $size $color;
+  } @else {
+    -webkit-box-shadow: $top $left $blur $size $color;
+    -moz-box-shadow: $top $left $blur $size $color;
+    box-shadow: $top $left $blur $size $color;
+  }
+}
+
+// тень текста
+// пример: @include ts(1px,1px,3px,$red);
+@mixin ts($x, $y, $blur, $color) {
+  text-shadow: $x $y $blur $color;
+}
+
+// тень текста (множественный эффект)
+// пример: @include text-shadow(1px 1px 1px $red, 2px 2px 2px $green);
+@mixin text-shadow($shadows...) {
+  text-shadow: $shadows;
+}
+
+// трансформация, плавный переход
+// пример: @include transit(color,.2s,ease-in-out);
+@mixin transit($what:all,$when:0.25s,$how:ease) {
+  -webkit-transition: $what $when $how;
+  -moz-transition: $what $when $how;
+  -ms-transition: $what $when $how;
+  -o-transition: $what $when $how;
+  transition: $what $when $how;
+}
+
+// кнопка color
+// пример @include btn;
+@mixin btn {
+  display: inline-block;
+  border: 1px solid black;
+  color: black;
+  cursor: pointer;
+  outline: none;
+  width: 100%;
+  text-align: center;
+  text-decoration: none;
+  padding: 6px 10px;
+  @include br(5px);
+  @include ts(0,0,0,black);
+  @include grad-l(gray, aqua);
+  &:hover {
+    @include grad-l(aqua, gray);
+  }
+}
+
+// скругление универсальное
+// пример: @include br(3px);
+@mixin br($rad) {
+  -webkit-border-radius: $rad;
+  -moz-border-radius: $rad;
+  -ms-border-radius: $rad;
+  border-radius: $rad;
+}
+
+// Скругление на каждый угол
+// пример: @include br-c(10px,0,10px,0);
+@mixin br-c($p1,$p2,$p3,$p4) {
+  -webkit-border-radius: $p1 $p2 $p3 $p4;
+  -moz-border-radius: $p1 $p2 $p3 $p4;
+  -ms-border-radius: $p1 $p2 $p3 $p4;
+  border-radius: $p1 $p2 $p3 $p4;
+}
+
+// Окружность с центрованным элементом
+// пример: @include round(60px,4px);
+@mixin round($w:80px, $bd:3px) {
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+  @include br($w/2);
+  height: $w;
+  width: $w;
+  border-width: $bd;
+  border-style: solid;
+  border-color: #464a4c;
+}
+
+// градиент линейный
+// пример: @include grad-l($red,$black);
+@mixin grad-l($direction, $color-stops) {
+  background: nth(nth($color-stops, 1), 1);
+  background: -webkit-linear-gradient(legacy-direction($direction), $color-stops);
+  background: linear-gradient($direction, $color-stops);
+}
+
+// Бэкграунд на всю ширину экрана.
+// пример: @include cover-background("../img/main.jpg", top, center, scroll);
+@mixin cover-background($img-uri, $background-top:"center", $background-left:"center", $background-attachment:"fixed") {
+  background: url($img-uri) no-repeat unquote($background-top) unquote($background-left) unquote($background-attachment);
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+// Горизонтальная линия
+// пример: @include sep-h(80%,2px,blue);
+@mixin sep-h($w,$h,$color) {
+  &:after {
+    content: "";
+    display: block;
+    height: $h;
+    width: $w;
+    margin: 0 auto;
+    background-color: $color;
+  }
+}
+
+// Сброс параметров списка
+// пример: @include rul;
+@mixin rul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+// Поведение при наведении на ссылку
+// пример: @include hov-a(none,$red);
+@mixin hov-a($under: none, $color: #002aff) {
+  &:hover, &:focus {
+    text-decoration: $under;
+    color: $color;
+  }
+}
+
+// эффект при наведении
+// пример: @include hov1;
+@mixin hov1 {
+  &:hover {
+    opacity: 0.8;
+  }
+}
+@mixin hov2 {
+  transition: all .2s ease-out;
+  &:hover {
+    opacity: 0.8;
+    box-shadow: 0 0 5px 1px rgba(0,0,0,0.5);
+    transition: all .2s ease-out;
+  }
+}
+
+// input style custom
+// пример: @include input($green,$black,$black,.5s);
+@mixin input($bsh: transparentize(blue,.3), $bdc: gray, $pl: gray, $timetransit: .15s){
+  display: block;
+  width: 100%;
+  height: 34px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #555;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid $bdc;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 0 1px $bdc;
+  box-shadow: inset 0 0 1px $bdc;
+  -webkit-transition: border-color ease-in-out $timetransit, -webkit-box-shadow ease-in-out $timetransit;
+  -o-transition: border-color ease-in-out $timetransit, box-shadow ease-in-out $timetransit;
+  transition: border-color ease-in-out $timetransit, box-shadow ease-in-out $timetransit;
+  &:focus {
+    border-color: $bsh;
+    outline: 0;
+    -webkit-box-shadow: inset 0 0 1px $bdc, 0 0 8px $bsh;
+    box-shadow: inset 0 0 1px $bdc, 0 0 8px $bsh;
+  }
+  &::-moz-placeholder{
+    color: $pl;
+    opacity: 1;
+  }
+  &:-ms-input-placeholder{
+    color: $pl;
+  }
+  &::-webkit-input-placeholder{
+    color: $pl;
+  }
+  &::-ms-expand{
+    background-color: transparent;
+    border: 0;
+  }
+}
+
+// цветовые примеси
+/* примеры:
+	body{
+		color: color(blue, normal,.8);
+	}
+	p{
+		color: color(orange);
+	}
+	blockquote{
+		color: color(blue);
+		background: color(orange, pale,.4);
+		border-color: color(orange, dark);
+	}
+*/
+// color-stack лучше в фаайл _vars.scss
+$color-stack: (group: orange, id: normal, color: #e67835), (group: orange, id: pale, color: #f8a878), (group: orange, id: dark, color: #ad490c), (group: blue, id: normal, color: #426682);
+
+@function color($group, $shade: normal, $transparency: 1){
+  @each $color in $color-stack {
+    $c-group: map-get($color, group);
+    $c-shade: map-get($color, id);
+
+    @if $group == map-get($color, group) and $shade == map-get($color, id){
+      @return rgba(map-get($color, color), $transparency);
+    }
+  }
+}

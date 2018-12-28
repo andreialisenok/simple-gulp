@@ -14,7 +14,7 @@ const replace = require('gulp-replace');
 gulp.task('html', () => {
     return gulp.src('app/index.html')
         .pipe(gulp.dest('build'))
-        .on('end', browserSync.reload({stream: true}))
+        .on('end', browserSync.reload)
 });
 
 gulp.task('styles', () => {
@@ -27,13 +27,13 @@ gulp.task('styles', () => {
         }))
         .pipe(sourceMaps.write())
         .pipe(gulp.dest('build/css'))
-        .on('end', browserSync.reload({stream: true}))
+        .on('end', browserSync.reload)
 });
 
 gulp.task('js', () => {
     return gulp.src('app/js/**/*.js')
         .pipe(gulp.dest('build/js'))
-        .on('end', browserSync.reload({stream: true}))
+        .on('end', browserSync.reload)
 });
 
 gulp.task('fonts', () => {
@@ -48,7 +48,7 @@ gulp.task('img', () => {
 });
 
 gulp.task('svg', () => {
-    return gulp.src('img/**/*.svg')
+    return gulp.src('app/img/**/*.svg')
         .pipe(svgmin({
             js2svg: {
                 pretty: true
@@ -66,16 +66,16 @@ gulp.task('svg', () => {
         .pipe(svgSprite({
             mode: {
                 symbol: {
-                    sprite: "sprite.svg"
+                    sprite: "../sprite.svg"
                 }
             }
         }))
-        .pipe(gulp.dest('build/img/svg'));
+        .pipe(gulp.dest('build/img/svg/sprite'));
 });
 
 gulp.task('svg:copy', () => {
     return gulp.src('app/img/**/*.svg')
-        .pipe(gulp.dest('build/img/avg'));
+        .pipe(gulp.dest('build/img'));
 });
 
 gulp.task('clean', () => {
@@ -83,7 +83,7 @@ gulp.task('clean', () => {
 });
 
 gulp.task('watch', () => {
-    gulp.watch("app/styles/**/*.scss", gulp.series("scss"));
+    gulp.watch("app/styles/**/*.scss", gulp.series("styles"));
     gulp.watch("app/**/*.html", gulp.series("html"));
     gulp.watch("app/js/**/*.js", gulp.series("js"));
     gulp.watch("app/img/**/*.{png,jpg,jpeg,gif", gulp.series("img"));
@@ -96,9 +96,13 @@ gulp.task('serve', () => {
     });
 });
 
+gulp.task('app', gulp.series(
+    'clean',
+    gulp.parallel('html', 'styles', 'js', 'img', 'svg', 'svg:copy')
+));
 
 gulp.task('build', gulp.series(
     'clean',
-    gulp.parallel('html', 'styles', 'js', 'img', 'svg'),
+    gulp.parallel('html', 'styles', 'js', 'img', 'svg', 'svg:copy'),
     gulp.parallel('watch', 'serve')
 ));
