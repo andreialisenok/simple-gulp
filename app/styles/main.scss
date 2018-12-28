@@ -5,7 +5,9 @@
 @import "utilities/core";
 
 
-
+.content {
+  margin: 0 auto;
+}
 
 // blocks
 @import "blocks/blocks";
