@@ -2,6 +2,14 @@
   "name": "simple-gulp",
   "version": "1.0.0",
   "description": "template for quick start",
+  "keywords": [
+    "simple-gulp",
+    "project",
+    "template",
+    "frontend",
+    "gulp",
+    "scss"
+  ],
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

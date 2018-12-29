@@ -2,12 +2,12 @@
 @import "utilities/fonts";
 @import "utilities/mixins";
 @import "utilities/variables";
-@import "utilities/core";
+@import "utilities/base";
 
 
 .content {
   margin: 0 auto;
 }
 
-// blocks
-@import "blocks/blocks";
+// components
+@import "components/components";
