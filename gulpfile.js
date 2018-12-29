@@ -10,6 +10,8 @@ const svgSprite = require('gulp-svg-sprite');
 const svgmin = require('gulp-svgmin');
 const cheerio = require('gulp-cheerio');
 const replace = require('gulp-replace');
+const uglify = require('gulp-uglify');
+const concat = require('gulp-concat');
 
 gulp.task('html', () => {
     return gulp.src('app/index.html')
@@ -35,7 +37,15 @@ gulp.task('js', () => {
         .pipe(gulp.dest('build/js'))
         .on('end', browserSync.reload)
 });
-
+gulp.task('js:libs', () => {
+    return gulp.src([
+        'node_modules/svg4everybody/dist/svg4everybody.min.js',
+        'node_modules/jquery/dist/jquery.min.js'
+    ])
+        .pipe(concat('libs.min.js'))
+        .pipe(uglify())
+        .pipe(gulp.dest('build/js/'));
+});
 gulp.task('fonts', () => {
     return gulp.src('app/fonts/**/*.*')
         .pipe(gulp.dest('build/fonts'));
@@ -103,6 +113,6 @@ gulp.task('app', gulp.series(
 
 gulp.task('build', gulp.series(
     'clean',
-    gulp.parallel('html', 'styles', 'js', 'img', 'svg', 'svg:copy'),
+    gulp.parallel('html', 'styles', 'js', 'js:libs', 'img', 'svg', 'svg:copy'),
     gulp.parallel('watch', 'serve')
 ));

@@ -1,13 +1,9 @@
 // utilities
+@import "utilities/libs";
 @import "utilities/fonts";
 @import "utilities/mixins";
 @import "utilities/variables";
 @import "utilities/base";
-
-
-.content {
-  margin: 0 auto;
-}
 
 // components
 @import "components/components";
