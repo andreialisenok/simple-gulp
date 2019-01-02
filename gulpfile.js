@@ -113,6 +113,6 @@ gulp.task('app', gulp.series(
 
 gulp.task('build', gulp.series(
     'clean',
-    gulp.parallel('html', 'styles', 'js', 'js:libs', 'img', 'svg', 'svg:copy'),
+    gulp.parallel('html', 'styles', 'js', 'js:libs', 'fonts', 'img', 'svg', 'svg:copy'),
     gulp.parallel('watch', 'serve')
 ));

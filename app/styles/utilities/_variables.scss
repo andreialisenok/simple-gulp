@@ -3,7 +3,8 @@ $white: #ffffff;
 $black: #000000;
 
 // Sizes
-$base-font-size: 16px;
+$font-size: 16px;
+$max-width: 1140px;
 
 $breakpoints: (
         "phone" : 400px,
@@ -15,7 +16,3 @@ $breakpoints: (
         "desktop" : 1248px,
         "desktop-wide": 1440px
 );
-
-$content-size: 1140px;
-
-// Fonts

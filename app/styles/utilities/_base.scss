@@ -1,7 +1,3 @@
-html {
-  font-size: $base-font-size;
-  height: 100%;
-}
 
 body {
   height: 100%;
@@ -58,6 +54,6 @@ button {
 
 .container {
   margin: 0 auto;
-  max-width: $content-size;
+  max-width: $max-width;
   width: 100%;
 }
