@@ -33,7 +33,7 @@
     "gulp-uglify": "^3.0.2"
   },
   "dependencies": {
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "node.extend": "^2.0.2",
     "normalize.css": "^8.0.1",
     "svg4everybody": "^2.1.9",
